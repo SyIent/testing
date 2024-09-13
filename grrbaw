@@ -1,0 +1,61 @@
+-- MainScript.lua
+
+local WindowLib = {}
+
+-- Function to create a new window with title
+function WindowLib:MakeWindow(options)
+    -- Create ScreenGui and Frame (Window)
+    local ScreenGui = Instance.new("ScreenGui")
+    local Frame = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local Title = Instance.new("TextLabel")
+
+    -- Set parent to player's GUI
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    Frame.Parent = ScreenGui
+    UICorner.Parent = Frame
+    Title.Parent = Frame
+
+    -- Apply options or default values
+    local windowName = options.Name or "Default Window"
+    local hidePremium = options.HidePremium or false
+    local saveConfig = options.SaveConfig or false
+    local configFolder = options.ConfigFolder or "DefaultConfig"
+
+    -- Frame properties (rectangular, dark gray)
+    Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Dark gray
+    Frame.Position = UDim2.new(0.3, 0, 0.3, 0) -- Default position
+    Frame.Size = UDim2.new(0.4, 0, 0.4, 0) -- Default size
+    Frame.Visible = false -- Initially hidden
+
+    -- Rounded corners
+    UICorner.CornerRadius = UDim.new(0, 12) -- Rounded corners
+
+    -- Title properties
+    Title.Size = UDim2.new(1, 0, 0.2, 0) -- Title takes top part of frame
+    Title.Text = windowName -- Default window title
+    Title.Font = Enum.Font.FredokaOne -- FredokaOne font
+    Title.TextScaled = true
+    Title.BackgroundTransparency = 1 -- Transparent background
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+
+    -- Return frame and title for future use
+    return Frame, Title
+end
+
+-- Function to show the window
+function WindowLib:ShowWindow(windowFrame)
+    windowFrame.Visible = true
+end
+
+-- Function to hide the window
+function WindowLib:HideWindow(windowFrame)
+    windowFrame.Visible = false
+end
+
+-- Function to change the title of the window
+function WindowLib:ChangeTitle(titleLabel, newTitle)
+    titleLabel.Text = newTitle
+end
+
+return WindowLib
