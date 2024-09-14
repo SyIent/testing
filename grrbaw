@@ -9,14 +9,17 @@ function SimpleLib:CreateWindow(title)
     Window.Name = "SimpleWindow"
     Window.Parent = game.Players.LocalPlayer.PlayerGui
 
+    -- Create the main frame
     local Frame = Instance.new("Frame")
     Frame.Name = "MainFrame"
-    Frame.Size = UDim2.new(0.4, 0, 0.4, 0)
-    Frame.Position = UDim2.new(0.3, 0, 0.3, 0)
+    Frame.Size = UDim2.new(0.5, 0, 0.5, 0) -- Size of the frame
+    Frame.Position = UDim2.new(0.25, 0, 0.25, 0) -- Centered position
     Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
     Frame.BorderSizePixel = 0
+    Frame.Visible = true -- Ensure frame is visible initially
     Frame.Parent = Window
 
+    -- Create the title bar
     local TitleBar = Instance.new("Frame")
     TitleBar.Name = "TitleBar"
     TitleBar.Size = UDim2.new(1, 0, 0.1, 0)
@@ -24,6 +27,7 @@ function SimpleLib:CreateWindow(title)
     TitleBar.BorderSizePixel = 0
     TitleBar.Parent = Frame
 
+    -- Create the title label
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Name = "TitleLabel"
     TitleLabel.Size = UDim2.new(1, 0, 1, 0)
@@ -31,8 +35,67 @@ function SimpleLib:CreateWindow(title)
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleLabel.TextScaled = true
     TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Font = Enum.Font.SourceSansBold -- Set font to SourceSansBold
+    TitleLabel.Font = Enum.Font.SourceSansBold
     TitleLabel.Parent = TitleBar
+
+    -- Create the toggle button
+    local ToggleButton = Instance.new("ImageButton")
+    ToggleButton.Name = "ToggleButton"
+    ToggleButton.Size = UDim2.new(0, 50, 0, 50) -- Size of the toggle button
+    ToggleButton.Position = UDim2.new(0.01, 0, 0.01, 0) -- Position the button at the top-left corner
+    ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.BackgroundTransparency = 1
+    ToggleButton.Image = "rbxassetid://17211539304" -- Custom image ID
+    ToggleButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.Parent = Window
+
+    -- Create rounded corners for the toggle button
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0.5, 0) -- Rounded corners
+    UICorner.Parent = ToggleButton
+
+    -- Toggle functionality
+    local function toggleWindow()
+        Frame.Visible = not Frame.Visible
+    end
+
+    ToggleButton.MouseButton1Click:Connect(toggleWindow)
+
+    -- Drag functionality
+    local dragging
+    local dragInput
+    local dragStart
+    local startPos
+
+    local function updateInput(input)
+        local delta = input.Position - dragStart
+        Frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+
+    TitleBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = Frame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    TitleBar.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if dragging and input == dragInput then
+            updateInput(input)
+        end
+    end)
 
     return Window
 end
