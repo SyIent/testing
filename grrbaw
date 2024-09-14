@@ -31,6 +31,7 @@ function SimpleLib:CreateWindow(title)
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleLabel.TextScaled = true
     TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Font = Enum.Font.SourceSansBold -- Set font to SourceSansBold
     TitleLabel.Parent = TitleBar
 
     return Window
