@@ -3,8 +3,75 @@
 local SimpleLib = {}
 SimpleLib.__index = SimpleLib
 
+-- Define themes with transparency based on primary colors
+local Themes = {
+    Red = {
+        FrameBackgroundColor = Color3.fromRGB(255, 0, 0),
+        TitleBarBackgroundColor = Color3.fromRGB(200, 0, 0),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Orange = {
+        FrameBackgroundColor = Color3.fromRGB(255, 165, 0),
+        TitleBarBackgroundColor = Color3.fromRGB(200, 130, 0),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Yellow = {
+        FrameBackgroundColor = Color3.fromRGB(255, 255, 0),
+        TitleBarBackgroundColor = Color3.fromRGB(200, 200, 0),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Green = {
+        FrameBackgroundColor = Color3.fromRGB(0, 255, 0),
+        TitleBarBackgroundColor = Color3.fromRGB(0, 200, 0),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Cyan = {
+        FrameBackgroundColor = Color3.fromRGB(0, 255, 255),
+        TitleBarBackgroundColor = Color3.fromRGB(0, 200, 200),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Blue = {
+        FrameBackgroundColor = Color3.fromRGB(0, 0, 255),
+        TitleBarBackgroundColor = Color3.fromRGB(0, 0, 200),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Purple = {
+        FrameBackgroundColor = Color3.fromRGB(128, 0, 128),
+        TitleBarBackgroundColor = Color3.fromRGB(100, 0, 100),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Magenta = {
+        FrameBackgroundColor = Color3.fromRGB(255, 0, 255),
+        TitleBarBackgroundColor = Color3.fromRGB(200, 0, 200),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Rose = {
+        FrameBackgroundColor = Color3.fromRGB(255, 192, 203),
+        TitleBarBackgroundColor = Color3.fromRGB(200, 150, 180),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Peach = {
+        FrameBackgroundColor = Color3.fromRGB(255, 218, 185),
+        TitleBarBackgroundColor = Color3.fromRGB(200, 180, 150),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Mint = {
+        FrameBackgroundColor = Color3.fromRGB(189, 252, 201),
+        TitleBarBackgroundColor = Color3.fromRGB(150, 220, 160),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+    Teal = {
+        FrameBackgroundColor = Color3.fromRGB(0, 128, 128),
+        TitleBarBackgroundColor = Color3.fromRGB(0, 100, 100),
+        ToggleButtonImageColor = Color3.fromRGB(255, 255, 255)
+    },
+}
+
 -- Function to create a new window
-function SimpleLib:CreateWindow(title)
+function SimpleLib:CreateWindow(title, themeName)
+    themeName = themeName or "Red" -- Default theme
+    local theme = Themes[themeName] or Themes.Red
+
     local Window = Instance.new("ScreenGui")
     Window.Name = "SimpleWindow"
     Window.Parent = game.Players.LocalPlayer.PlayerGui
@@ -14,7 +81,8 @@ function SimpleLib:CreateWindow(title)
     Frame.Name = "MainFrame"
     Frame.Size = UDim2.new(0.5, 0, 0.5, 0) -- Size of the frame
     Frame.Position = UDim2.new(0.25, 0, 0.25, 0) -- Centered position
-    Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    Frame.BackgroundColor3 = theme.FrameBackgroundColor
+    Frame.BackgroundTransparency = 0.2 -- 0.8 transparency
     Frame.BorderSizePixel = 0
     Frame.Visible = true -- Ensure frame is visible initially
     Frame.Parent = Window
@@ -23,7 +91,8 @@ function SimpleLib:CreateWindow(title)
     local TitleBar = Instance.new("Frame")
     TitleBar.Name = "TitleBar"
     TitleBar.Size = UDim2.new(1, 0, 0.1, 0)
-    TitleBar.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+    TitleBar.BackgroundColor3 = theme.TitleBarBackgroundColor
+    TitleBar.BackgroundTransparency = 0.2 -- 0.8 transparency
     TitleBar.BorderSizePixel = 0
     TitleBar.Parent = Frame
 
@@ -46,7 +115,7 @@ function SimpleLib:CreateWindow(title)
     ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ToggleButton.BackgroundTransparency = 1
     ToggleButton.Image = "rbxassetid://17211539304" -- Custom image ID
-    ToggleButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.ImageColor3 = theme.ToggleButtonImageColor
     ToggleButton.Parent = Window
 
     -- Create rounded corners for the toggle button
