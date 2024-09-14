@@ -1,3 +1,4 @@
+n
 -- Library Script: SimpleLib
 
 local SimpleLib = {}
@@ -79,8 +80,8 @@ function SimpleLib:CreateWindow(title, themeName)
     -- Create the main frame
     local Frame = Instance.new("Frame")
     Frame.Name = "MainFrame"
-    Frame.Size = UDim2.new(0.5, 0, 0.5, 0) -- Size of the frame
-    Frame.Position = UDim2.new(0.25, 0, 0.25, 0) -- Centered position
+    Frame.Size = UDim2.new(0.6, 0, 0.6, 0) -- Increased size of the frame
+    Frame.Position = UDim2.new(0.2, 0, 0.2, 0) -- Centered position
     Frame.BackgroundColor3 = theme.FrameBackgroundColor
     Frame.BackgroundTransparency = 0.2 -- 0.8 transparency
     Frame.BorderSizePixel = 0
@@ -90,6 +91,25 @@ function SimpleLib:CreateWindow(title, themeName)
     local FrameUICorner = Instance.new("UICorner")
     FrameUICorner.CornerRadius = UDim.new(0.1, 0) -- Slightly rounded corners
     FrameUICorner.Parent = Frame
+
+    -- Create circle frames for design
+    local function createCircleFrame(size, position)
+        local CircleFrame = Instance.new("Frame")
+        CircleFrame.Size = UDim2.new(0, size, 0, size)
+        CircleFrame.Position = position
+        CircleFrame.BackgroundColor3 = theme.FrameBackgroundColor
+        CircleFrame.BackgroundTransparency = 0.7 -- 0.3 transparency
+        CircleFrame.BorderSizePixel = 0
+        CircleFrame.Parent = Frame
+
+        local CircleUICorner = Instance.new("UICorner")
+        CircleUICorner.CornerRadius = UDim.new(0.5, 0) -- Fully rounded corners for circle effect
+        CircleUICorner.Parent = CircleFrame
+    end
+
+    -- Create large and small circle frames
+    createCircleFrame(100, UDim2.new(0.05, 0, 0.1, 0))
+    createCircleFrame(50, UDim2.new(0.75, 0, 0.75, 0))
 
     -- Create the title bar
     local TitleBar = Instance.new("Frame")
@@ -162,30 +182,4 @@ function SimpleLib:CreateWindow(title, themeName)
 
     TitleBar.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = input.Position
-            startPos = Frame.Position
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
-
-    TitleBar.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            dragInput = input
-        end
-    end)
-
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if dragging and input == dragInput then
-            updateInput(input)
-        end
-    end)
-
-    return Window
-end
-
-return SimpleLib
+            dragging = true            dragging = true
